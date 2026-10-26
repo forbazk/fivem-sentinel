@@ -64,7 +64,7 @@ function jsCommands(file: SourceFile): Command[] {
 }
 
 export const unrestrictedCommand: Rule = {
-  id: 'FA010',
+  id: 'FS010',
   name: 'unrestricted-command',
   severity: 'high',
   description: 'A server command registered with restricted = false gives money, items, jobs or runs console commands without checking the caller. Any player can type it.',
@@ -93,7 +93,7 @@ export const unrestrictedCommand: Rule = {
 };
 
 export const sensitiveConvar: Rule = {
-  id: 'FA011',
+  id: 'FS011',
   name: 'sensitive-convar',
   severity: 'medium',
   description: 'The resource reads or overwrites server secrets such as rcon_password, the database connection string or the license key. Backdoors read them to exfiltrate credentials.',

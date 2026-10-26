@@ -84,7 +84,7 @@ export function findSecrets(text: string): SecretMatch[] {
 }
 
 export const secrets: Rule = {
-  id: 'FA004',
+  id: 'FS004',
   name: 'hardcoded-secret',
   severity: 'high',
   description: 'Credentials committed in plain text: webhooks, bot tokens, license keys, database passwords. Anyone who gets the resource can abuse them. Move them to server convars.',

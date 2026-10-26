@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0
+
+### Changed
+
+- The project is renamed from fivem-audit to fivem-sentinel. The command, package and repository now use the new name.
+- Rule IDs move from `FA001`–`FA011` to `FS001`–`FS011`, and suppression comments become `fivem-sentinel-ignore` and `fivem-sentinel-ignore-file`. Update existing comments and `--rules` filters.
+
 ## 0.2.0
 
 ### Security

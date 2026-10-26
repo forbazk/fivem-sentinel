@@ -35,8 +35,8 @@ const LANGUAGES: Readonly<Record<string, Language>> = {
 };
 const MANIFESTS = ['fxmanifest.lua', '__resource.lua'] as const;
 const PENALTY: Readonly<Record<Severity, number>> = { critical: 40, high: 15, medium: 5, low: 1, info: 0 };
-const SUPPRESS = /fivem-audit-ignore(?!-file)(?:[ \t]+((?:FA\d{3}[ \t,]*)+))?/;
-const SUPPRESS_FILE = /fivem-audit-ignore-file/;
+const SUPPRESS = /fivem-sentinel-ignore(?!-file)(?:[ \t]+((?:FS\d{3}[ \t,]*)+))?/;
+const SUPPRESS_FILE = /fivem-sentinel-ignore-file/;
 
 interface Resource {
   readonly name: string;

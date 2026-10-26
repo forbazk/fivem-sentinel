@@ -26,7 +26,7 @@ function hidesCode(literal: StringLiteral): boolean {
 }
 
 export const obfuscation: Rule = {
-  id: 'FA003',
+  id: 'FS003',
   name: 'obfuscated-code',
   severity: 'high',
   description: 'Escaped byte strings, string.char chains, dynamic global lookups, invisible or bidirectional characters and packed lines that hide what the code really does.',
