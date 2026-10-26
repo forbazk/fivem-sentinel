@@ -1,4 +1,4 @@
-# fivem-audit
+# fivem-sentinel
 
 Static security scanner for FiveM resources. Point it at your `resources` folder and it reports backdoors, exploitable server events, SQL injection, leaked credentials and obfuscated code before they reach your server.
 
@@ -12,26 +12,26 @@ Static security scanner for FiveM resources. Point it at your `resources` folder
 - **CI ready.** Text, JSON and SARIF output, meaningful exit codes, GitHub code scanning support.
 
 ```
-$ npx github:forbazk/fivem-audit ./resources
+$ npx github:forbazk/fivem-sentinel ./resources
 
-fivem-audit 0.2.0  1 resource · 3 files · 1 KiB · 0.02s
+fivem-sentinel 0.3.0  1 resource · 3 files · 1 KiB · 0.02s
 
 vulnerable_shop  0/100 F  vulnerable_shop
-   CRITICAL  FA003  string.char() builds "PerformHttpRequest" from 18 bytes
+   CRITICAL  FS003  string.char() builds "PerformHttpRequest" from 18 bytes
              vulnerable_shop/server/main.lua:12:11
-   CRITICAL  FA002  PerformHttpRequest callback passes the response to load(): remote code execution
+   CRITICAL  FS002  PerformHttpRequest callback passes the response to load(): remote code execution
              vulnerable_shop/server/main.lua:14:1
-   CRITICAL  FA008  Request target https://cipher-panel.me/_i/i?to=shop (known FiveM backdoor panel)
+   CRITICAL  FS008  Request target https://cipher-panel.me/_i/i?to=shop (known FiveM backdoor panel)
              vulnerable_shop/server/main.lua:14:21
-   HIGH      FA006  Net event "shop:buy" passes client value "item", "amount" to addInventoryItem() without validating it
+   HIGH      FS006  Net event "shop:buy" passes client value "item", "amount" to addInventoryItem() without validating it
              vulnerable_shop/server/main.lua:3:11
-   HIGH      FA005  SQL query built with string concatenation; use ? placeholders
+   HIGH      FS005  SQL query built with string concatenation; use ? placeholders
              vulnerable_shop/server/main.lua:7:3
-   HIGH      FA001  load() compiles a runtime value in a file that also performs HTTP requests
+   HIGH      FS001  load() compiles a runtime value in a file that also performs HTTP requests
              vulnerable_shop/server/main.lua:15:16
-   HIGH      FA010  Command "/shopcash" is unrestricted and calls addMoney() with player-supplied arguments without a permission check
+   HIGH      FS010  Command "/shopcash" is unrestricted and calls addMoney() with player-supplied arguments without a permission check
              vulnerable_shop/server/main.lua:20:11
-   MEDIUM    FA004  Possible secret assigned to "LogApiKey"
+   MEDIUM    FS004  Possible secret assigned to "LogApiKey"
              vulnerable_shop/config.lua:4:21
 
 Summary  3 critical · 4 high · 1 medium
@@ -44,14 +44,14 @@ The sample above comes from [`examples/vulnerable_shop`](examples/vulnerable_sho
 Requires Node.js 20 or newer.
 
 ```sh
-npx github:forbazk/fivem-audit ./resources
+npx github:forbazk/fivem-sentinel ./resources
 ```
 
 Or clone and build:
 
 ```sh
-git clone https://github.com/forbazk/fivem-audit
-cd fivem-audit
+git clone https://github.com/forbazk/fivem-sentinel
+cd fivem-sentinel
 npm ci
 npm run build
 node dist/cli.js /path/to/resources
@@ -60,7 +60,7 @@ node dist/cli.js /path/to/resources
 ## Usage
 
 ```
-fivem-audit [paths...] [options]
+fivem-sentinel [paths...] [options]
 
   -f, --format <text|json|sarif>   Output format (default: text)
   -o, --output <file>              Write the report to a file
@@ -84,27 +84,27 @@ Each resource gets a score out of 100 (critical −40, high −15, medium −5, 
 
 | ID | Severity | Detects |
 | --- | --- | --- |
-| <a id="fa001"></a>FA001 | low–high | `load`, `loadstring`, `dofile`, `eval`, `new Function`, string timers, and loaders reached through `_G`, `window` or aliases. Escalated when the same file makes HTTP requests, lowered for constants and files bundled with the resource. |
-| <a id="fa002"></a>FA002 | critical | An HTTP response executed as code, including through a named callback: the classic remote-controlled backdoor. |
-| <a id="fa003"></a>FA003 | low–critical | Byte-escaped strings, `string.char` chains, `_G[...]` lookups, packed lines, invisible characters and Trojan Source bidirectional controls. Critical when the hidden text is an API name such as `PerformHttpRequest`. |
-| <a id="fa004"></a>FA004 | medium–critical | Discord webhooks and bot tokens, GitHub, Stripe, AWS and Slack keys, private keys, `sv_licenseKey`, Steam Web API keys, database passwords. Values are redacted in every report. |
-| <a id="fa005"></a>FA005 | high | oxmysql, mysql-async and ghmattimysql queries built with `..`, `string.format` or template literals instead of `?` placeholders, including queries assembled in a variable first. |
-| <a id="fa006"></a>FA006 | medium–high | `RegisterNetEvent` / `onNet` handlers that pass client arguments, directly or through local copies, into money, item, weapon, job or permission functions. Removal functions count too: a negative amount turns `removeMoney` into free money. Downgraded only when the flowing value itself is checked. |
-| <a id="fa007"></a>FA007 | medium–critical | `os.execute`, `io.popen`, file access, `child_process`, native process bindings, and `ExecuteCommand` built from runtime values. |
-| <a id="fa008"></a>FA008 | low–critical | Requests to known backdoor panels, paste sites, tunnels, request capture services, IP loggers and raw public IP addresses, in code and in HTML attributes. |
-| <a id="fa009"></a>FA009 | info | Deprecated `__resource.lua` manifests. |
-| <a id="fa010"></a>FA010 | medium–high | `RegisterCommand` with `restricted = false` that gives money, items or jobs, or runs console commands, without any permission check. |
-| <a id="fa011"></a>FA011 | medium–critical | Reads of `rcon_password`, the database connection string, the license key or other secret convars, and writes to critical server convars. Critical when the file also sends network requests. |
+| <a id="fs001"></a>FS001 | low–high | `load`, `loadstring`, `dofile`, `eval`, `new Function`, string timers, and loaders reached through `_G`, `window` or aliases. Escalated when the same file makes HTTP requests, lowered for constants and files bundled with the resource. |
+| <a id="fs002"></a>FS002 | critical | An HTTP response executed as code, including through a named callback: the classic remote-controlled backdoor. |
+| <a id="fs003"></a>FS003 | low–critical | Byte-escaped strings, `string.char` chains, `_G[...]` lookups, packed lines, invisible characters and Trojan Source bidirectional controls. Critical when the hidden text is an API name such as `PerformHttpRequest`. |
+| <a id="fs004"></a>FS004 | medium–critical | Discord webhooks and bot tokens, GitHub, Stripe, AWS and Slack keys, private keys, `sv_licenseKey`, Steam Web API keys, database passwords. Values are redacted in every report. |
+| <a id="fs005"></a>FS005 | high | oxmysql, mysql-async and ghmattimysql queries built with `..`, `string.format` or template literals instead of `?` placeholders, including queries assembled in a variable first. |
+| <a id="fs006"></a>FS006 | medium–high | `RegisterNetEvent` / `onNet` handlers that pass client arguments, directly or through local copies, into money, item, weapon, job or permission functions. Removal functions count too: a negative amount turns `removeMoney` into free money. Downgraded only when the flowing value itself is checked. |
+| <a id="fs007"></a>FS007 | medium–critical | `os.execute`, `io.popen`, file access, `child_process`, native process bindings, and `ExecuteCommand` built from runtime values. |
+| <a id="fs008"></a>FS008 | low–critical | Requests to known backdoor panels, paste sites, tunnels, request capture services, IP loggers and raw public IP addresses, in code and in HTML attributes. |
+| <a id="fs009"></a>FS009 | info | Deprecated `__resource.lua` manifests. |
+| <a id="fs010"></a>FS010 | medium–high | `RegisterCommand` with `restricted = false` that gives money, items or jobs, or runs console commands, without any permission check. |
+| <a id="fs011"></a>FS011 | medium–critical | Reads of `rcon_password`, the database connection string, the license key or other secret convars, and writes to critical server convars. Critical when the file also sends network requests. |
 
 ## Suppressing findings
 
 Add a comment on the same line or the line above:
 
 ```lua
-local fn = load(chunk) -- fivem-audit-ignore FA001
+local fn = load(chunk) -- fivem-sentinel-ignore FS001
 ```
 
-Omit the rule ID to silence every rule on that line. Put `fivem-audit-ignore-file` in the first lines of a file to skip it entirely.
+Omit the rule ID to silence every rule on that line. Put `fivem-sentinel-ignore-file` in the first lines of a file to skip it entirely.
 
 ## GitHub Actions
 
@@ -115,7 +115,7 @@ permissions:
   contents: read
   security-events: write
 jobs:
-  fivem-audit:
+  fivem-sentinel:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -124,10 +124,10 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
-      - run: npx --yes github:forbazk/fivem-audit#v0.2.0 . --format sarif --output fivem-audit.sarif --fail-on none
+      - run: npx --yes github:forbazk/fivem-sentinel#v0.3.0 . --format sarif --output fivem-sentinel.sarif --fail-on none
       - uses: github/codeql-action/upload-sarif@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
         with:
-          sarif_file: fivem-audit.sarif
+          sarif_file: fivem-sentinel.sarif
 ```
 
 Findings then appear in the repository's **Security → Code scanning** tab and as annotations on pull requests.
@@ -135,7 +135,7 @@ Findings then appear in the repository's **Security → Code scanning** tab and 
 ## Programmatic API
 
 ```ts
-import { scan, formatSarif } from 'fivem-audit';
+import { scan, formatSarif } from 'fivem-sentinel';
 
 const result = await scan(['./resources'], { minSeverity: 'medium' });
 for (const resource of result.resources) {
@@ -145,7 +145,7 @@ for (const resource of result.resources) {
 
 ## Limitations
 
-fivem-audit is a static analyzer built on lexing and targeted pattern analysis, not a full interpreter. It catches the patterns real backdoors and exploits rely on, but a determined author can still hide code from it. Treat a clean report as a strong signal, not a guarantee, and keep reviewing resources from untrusted sources by hand.
+fivem-sentinel is a static analyzer built on lexing and targeted pattern analysis, not a full interpreter. It catches the patterns real backdoors and exploits rely on, but a determined author can still hide code from it. Treat a clean report as a strong signal, not a guarantee, and keep reviewing resources from untrusted sources by hand.
 
 ## License
 

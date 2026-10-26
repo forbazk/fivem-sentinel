@@ -87,7 +87,7 @@ function jsHandlers(file: SourceFile): Handler[] {
 }
 
 export const netEvents: Rule = {
-  id: 'FA006',
+  id: 'FS006',
   name: 'unvalidated-net-event',
   severity: 'high',
   description: 'A server event reachable from any client passes its arguments straight into money, item, job or permission functions. Cheaters trigger these events directly with arbitrary values.',

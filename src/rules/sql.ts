@@ -47,7 +47,7 @@ function assignmentBefore(file: SourceFile, name: string, before: number): Span 
 }
 
 export const sqlInjection: Rule = {
-  id: 'FA005',
+  id: 'FS005',
   name: 'sql-injection',
   severity: 'high',
   description: 'A SQL query is assembled with string concatenation, string.format or template literals. Use parameter placeholders (?) so player input can never change the query.',

@@ -20,7 +20,7 @@ Options
   -o, --output <file>              Write the report to a file
       --fail-on <severity>         Exit with code 1 at or above this severity (default: high, "none" to disable)
       --min-severity <severity>    Hide findings below this severity (default: low)
-      --rules <ids>                Only run these rules, comma separated (e.g. FA001,FA004)
+      --rules <ids>                Only run these rules, comma separated (e.g. FS001,FS004)
       --exclude-rules <ids>        Skip these rules, comma separated
   -i, --ignore <glob>              Ignore paths matching the glob (repeatable)
       --max-file-size <kb>         Skip files larger than this (default: 2048)
@@ -32,7 +32,7 @@ Options
   -v, --version                    Show the version
 
 Severities: ${SEVERITIES.join(', ')}
-Suppress a finding with a "fivem-audit-ignore FA00X" comment on the same or previous line.`;
+Suppress a finding with a "fivem-sentinel-ignore FS00X" comment on the same or previous line.`;
 
 class UsageError extends Error {}
 

@@ -33,7 +33,7 @@ function namedFunctionBody(file: SourceFile, name: string): Span | undefined {
 }
 
 export const dynamicCode: Rule = {
-  id: 'FA001',
+  id: 'FS001',
   name: 'dynamic-code-execution',
   severity: 'medium',
   description: 'Code is compiled or executed at runtime (load, loadstring, dofile, eval, new Function). This is the core primitive of almost every FiveM backdoor.',
@@ -105,7 +105,7 @@ export const dynamicCode: Rule = {
 };
 
 export const remoteExecution: Rule = {
-  id: 'FA002',
+  id: 'FS002',
   name: 'remote-code-execution',
   severity: 'critical',
   description: 'An HTTP response is executed as code. This is the signature of remote-controlled backdoors that let a third party run arbitrary code on the server.',
@@ -138,7 +138,7 @@ export const remoteExecution: Rule = {
 };
 
 export const systemAccess: Rule = {
-  id: 'FA007',
+  id: 'FS007',
   name: 'system-access',
   severity: 'critical',
   description: 'Shell commands, process spawning or raw filesystem access from a resource. FiveM resources almost never need this; malware uses it to persist and spread.',

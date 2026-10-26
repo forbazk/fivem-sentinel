@@ -21,7 +21,7 @@ const HOSTS: readonly HostRule[] = [
 ];
 
 export const suspiciousHosts: Rule = {
-  id: 'FA008',
+  id: 'FS008',
   name: 'suspicious-endpoint',
   severity: 'medium',
   description: 'The resource talks to an endpoint commonly used by backdoors: known panels, paste sites, tunnels or raw IP addresses.',
@@ -47,7 +47,7 @@ export const suspiciousHosts: Rule = {
 };
 
 export const legacyManifest: Rule = {
-  id: 'FA009',
+  id: 'FS009',
   name: 'legacy-manifest',
   severity: 'info',
   description: '__resource.lua is deprecated. Migrate to fxmanifest.lua with an fx_version so the resource keeps working with current server builds.',
